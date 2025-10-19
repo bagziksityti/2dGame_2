@@ -25,14 +25,23 @@ public class PlayerController : MonoBehaviour
         animator.SetFloat("yspeed", yspeed);
         float xspeed = Mathf.Abs(rigidBody.linearVelocityX);
         animator.SetFloat("xspeed", xspeed);
+        float blinkVal = Random.Range(0.0f, 200.0f);
+        if (blinkVal < 1.0f)
+        {
+            animator.SetTrigger("blinktrigger");
+        }
         if (rigidBody.linearVelocityX * transform.localScale.x < 0.0f)
         {
             transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
         }
+       
     }
+
+
 
     void FixedUpdate()
     {
+        
         float h = Input.GetAxis("Horizontal");
         // check if we are on the ground
         if (grounded)
