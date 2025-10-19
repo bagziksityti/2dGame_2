@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    Animator animator;
     Rigidbody2D rigidBody;
     public float speed = 5.0f;
     public float jumpForce = 8.0f;
@@ -15,11 +16,19 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         rigidBody = GetComponent<Rigidbody2D>();
+        animator = GetComponent<Animator>();
     }
 
     void Update()
     {
-        // You can add input checks here if needed
+        float yspeed = rigidBody.linearVelocity.y;
+        animator.SetFloat("yspeed", yspeed);
+        float xspeed = Mathf.Abs(rigidBody.linearVelocityX);
+        animator.SetFloat("xspeed", xspeed);
+        if (rigidBody.linearVelocityX * transform.localScale.x < 0.0f)
+        {
+            transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
+        }
     }
 
     void FixedUpdate()
