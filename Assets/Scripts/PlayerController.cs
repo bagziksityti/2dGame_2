@@ -36,7 +36,20 @@ public class PlayerController : MonoBehaviour
         }
        
     }
-
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.layer == 3)
+        {
+            grounded = true;
+        }
+    }
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        if (collision.gameObject.layer == 3)
+        {
+            grounded = false;
+        }
+    }
 
 
     void FixedUpdate()
@@ -60,21 +73,16 @@ public class PlayerController : MonoBehaviour
         }
 
     }
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.gameObject.layer == 3)
-        {
-            grounded = true;
-        }
-    }
-    private void OnCollisionExit2D(Collision2D collision)
-    {
-        if (collision.gameObject.layer == 3)
-        {
-            grounded = false;
-        }
-    }
+    
 
+    void OnTriggerEnter2D(Collider2D collision)
+    {
+        if(collision.gameObject.tag == "Coin")
+        {
+            Debug.Log("Hit a collectible!");
+            Destroy(collision.gameObject);
+        }
+    }
 }
 
 
