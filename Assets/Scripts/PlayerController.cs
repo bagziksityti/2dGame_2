@@ -12,6 +12,7 @@ public class PlayerController : MonoBehaviour
     public float airControlForce = 10.0f;
     public float airControlMax = 1.5f;
     public bool grounded;
+    public AudioSource coinsound;
 
     void Start()
     {
@@ -79,6 +80,7 @@ public class PlayerController : MonoBehaviour
     {
         if(collision.gameObject.tag == "Coin")
         {
+            coinsound.Play();
             Debug.Log("Hit a collectible!");
             Destroy(collision.gameObject);
         }
