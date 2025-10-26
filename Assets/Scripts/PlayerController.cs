@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class PlayerController : MonoBehaviour
 {
@@ -13,11 +14,16 @@ public class PlayerController : MonoBehaviour
     public float airControlMax = 1.5f;
     public bool grounded;
     public AudioSource coinsound;
+    public TextMeshProUGUI uiText;
+    int totalCoins;
+    int coinsCollected;
 
     void Start()
     {
         rigidBody = GetComponent<Rigidbody2D>();
-        animator = GetComponent<Animator>();
+        animator = GetComponent<Animator>(); 
+        coinsCollected = 0;
+        totalCoins = GameObject.FindGameObjectsWithTag("Coin").Length;
     }
 
     void Update()
@@ -35,7 +41,10 @@ public class PlayerController : MonoBehaviour
         {
             transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
         }
-       
+        string uiString = "x " + coinsCollected + "/" + totalCoins;
+        uiText.text = uiString;
+
+
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
@@ -80,6 +89,7 @@ public class PlayerController : MonoBehaviour
     {
         if(collision.gameObject.tag == "Coin")
         {
+            coinsCollected++;
             coinsound.Play();
             Debug.Log("Hit a collectible!");
             Destroy(collision.gameObject);
