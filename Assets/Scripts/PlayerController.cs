@@ -19,6 +19,8 @@ public class PlayerController : MonoBehaviour
     public TextMeshProUGUI uiText;
     int totalCoins;
     int coinsCollected;
+    string curLevel;
+    string nextLevel;
 
     void Start()
     {
@@ -26,6 +28,37 @@ public class PlayerController : MonoBehaviour
         animator = GetComponent<Animator>(); 
         coinsCollected = 0;
         totalCoins = GameObject.FindGameObjectsWithTag("Coin").Length;
+        curLevel = SceneManager.GetActiveScene().name;
+        if (curLevel == "Level1")
+            nextLevel = "Level2";
+        else if (curLevel == "Level2")
+            nextLevel = "Finished";
+
+    }
+
+    IEnumerator DoDeath()
+    {
+        
+        rigidBody.constraints = RigidbodyConstraints2D.FreezeAll;
+        
+        GetComponent<Renderer>().enabled = false;
+        GetComponent<Collider2D>().enabled = false;
+
+        yield return new WaitForSeconds(2);
+        SceneManager.LoadScene(curLevel);
+    }
+
+    IEnumerator LoadNextLevel()
+    {
+        if (nextLevel != "Finished")
+        {
+            GetComponent<Renderer>().enabled = false;
+            GetComponent<Collider2D>().enabled = false;
+            yield return new WaitForSeconds(2);
+            SceneManager.LoadScene(nextLevel);
+        }
+      
+
     }
 
     void Update()
@@ -56,7 +89,7 @@ public class PlayerController : MonoBehaviour
         }
         if (collision.gameObject.tag == "Death")
         {
-            SceneManager.LoadScene(0);
+            StartCoroutine(DoDeath());
         }
     }
     private void OnCollisionExit2D(Collision2D collision)
@@ -99,6 +132,12 @@ public class PlayerController : MonoBehaviour
             coinsound.Play();
             Debug.Log("Hit a collectible!");
             Destroy(collision.gameObject);
+        }
+        if (collision.gameObject.tag == "LevelEnd")
+        {
+            // hide the level end object
+            collision.gameObject.SetActive(false);
+            StartCoroutine(LoadNextLevel());
         }
     }
     
