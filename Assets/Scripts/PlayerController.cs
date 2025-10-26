@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.SceneManagement;
+
 
 public class PlayerController : MonoBehaviour
 {
@@ -52,6 +54,10 @@ public class PlayerController : MonoBehaviour
         {
             grounded = true;
         }
+        if (collision.gameObject.tag == "Death")
+        {
+            SceneManager.LoadScene(0);
+        }
     }
     private void OnCollisionExit2D(Collision2D collision)
     {
@@ -95,6 +101,8 @@ public class PlayerController : MonoBehaviour
             Destroy(collision.gameObject);
         }
     }
+    
+
 }
 
 
